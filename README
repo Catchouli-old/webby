@@ -1,0 +1,3 @@
+edit stack.yaml and change the part that says /home/cat to your own path
+sry dont know how else to fix that
+to build do stack setup and stack build

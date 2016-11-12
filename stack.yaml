@@ -1,0 +1,24 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- '.'
+- /home/cat/.stack/programs/x86_64-linux/ghcjs-0.2.1.9007002_ghc-8.0.1/src/.stack-work/install/x86_64-linux/lts-7.2/8.0.1/share/x86_64-linux-ghc-8.0.1/ghcjs-0.2.1.9007002/lib/ghcjs-prim
+- location:
+    git: https://github.com/ghcjs/ghcjs-base.git
+    commit: dd7034ef8582ea8a175a71a988393a9d1ee86d6f
+setup-info:
+  ghcjs:
+    source:
+      ghcjs-0.2.1.9007002_ghc-8.0.1:
+        url: http://ghcjs.tolysz.org/ghc-8.0-2016-10-01-lts-7.2-9007002.tar.gz
+extra-deps:
+- dlist-0.7.1.2
+- ghcjs-dom-0.6.0.0
+- ghcjs-dom-jsaddle-0.6.0.0
+- jsaddle-0.6.0.1
+- jsaddle-dom-0.6.0.0
+- ref-tf-0.4.0.1
+- ghcjs-dom-jsffi-0.6.0.0
+compiler-check: match-exact
+compiler: ghcjs-0.2.1.9007002_ghc-8.0.1
+resolver: lts-7.8
