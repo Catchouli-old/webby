@@ -16,6 +16,7 @@ executable web
   hs-source-dirs:      src
   main-is:             Main.hs
   default-language:    Haskell2010
+  other-modules:       Render
   build-depends:       base >= 4.7 && < 5
                      , ghcjs-base
                      , ghcjs-dom
@@ -24,3 +25,4 @@ executable web
                      , mtl
                      , transformers
                      , file-embed
+                     , time
