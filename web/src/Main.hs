@@ -64,7 +64,7 @@ main = do
         -- Draw function, taking a draw action
         let draw = (flip (refDrawCtx ctx)) stateRef
 
-        draw (drawGame tex)
+        draw (drawGame (fromIntegral t / 2000000.0) tex)
 
         -- old, ccontains its own loop and is unnecessary
         --static . scene $ tex

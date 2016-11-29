@@ -11,6 +11,7 @@ import Codec.Picture
 import Codec.Picture.Types (promoteImage)
 import qualified Data.Vector.Storable as V
 import qualified SDL as SDL
+import qualified SDL.Time as SDL
 
 
 -- | The fixed timestep for updates
@@ -41,6 +42,8 @@ main = do
   let windowDesc = SDL.defaultWindow { SDL.windowOpenGL = Just SDL.defaultOpenGL
                                      , SDL.windowInitialSize = windowDims
                                      }
+  
+  ticks <- SDL.ticks
 
   -- Create window and context
   window <- SDL.createWindow title windowDesc
@@ -54,11 +57,13 @@ main = do
   let draw = (flip (refDrawCtx ctx)) stateRef
 
   -- Main loop
-  let loop = do draw (drawGame tex)
-                SDL.glSwapWindow window
-                loop
+  let loop t = do ticks <- SDL.ticks
+                  let elapsed = fromIntegral (ticks) / 5000.0
+                  draw (drawGame elapsed tex)
+                  SDL.glSwapWindow window
+                  loop ticks
 
-  loop
+  SDL.ticks >>= loop
 
   -- Cleanup
   SDL.glDeleteContext context
