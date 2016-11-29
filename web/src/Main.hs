@@ -3,9 +3,11 @@
 
 module Main where
 
-import Paths_web
-import Render
-import Game
+import Graphics.Rendering.Ombra
+import Graphics.Rendering.Ombra.Backend.WebGL
+import Graphics.Rendering.Ombra.D3
+import Common
+
 import JavaScript.Web.AnimationFrame
 import qualified GHCJS.DOM as DOM
 import qualified GHCJS.DOM.Document as DOM
@@ -16,27 +18,40 @@ import GHCJS.Concurrent
 import Data.Time.Clock.POSIX
 import Data.Ratio
 import Control.Concurrent
+import Game
+
+import Graphics.Rendering.Ombra.Backend.WebGL
+
+import Graphics.Rendering.Ombra.Draw
+import Data.IORef
 
 import qualified GHCJS.Types      as T
 import qualified Data.JSString    as T
 import qualified GHCJS.Foreign    as F
 
-foreign import javascript unsafe "getStuff()" getStuff :: IO (T.JSString)
+
+-- | Query a selector
+
+foreign import javascript unsafe
+  "document.querySelector($1)"
+  query :: T.JSString -> IO T.JSVal
+
+
+-- | Gets the current time in microseconds
 
 timeMicros :: IO Integer
 timeMicros = numerator . toRational . (*1000000) <$> getPOSIXTime
 
+
+-- | Creates a canvas, context, and enters the main loop
+
 main = do
-  path <- getDataFileName "test"
-  putStrLn . show $ path
+  canvas <- query "#canvas"
+  ctx <- makeContext canvas
+  stateRef <- drawState 512 512 >>= newIORef
 
-  -- Create renderer instance
-  Just rendererInstance <- createRendererInstance
-
-  --T.unpack <$> getStuff >>= putStrLn
-
-  -- Create the game instance
-  let game = Game (0, 0) [(0.5, 0.5)]
+  -- Load our texture
+  tex <- loadTexture "data/images/tex.png"
 
   -- Main loop
   let loop lastT fps frames lastFpsUpdate = do
@@ -46,8 +61,13 @@ main = do
         -- Limit frame rate
         waitForAnimationFrame
 
-        -- Render the game
-        renderGame rendererInstance
+        -- Draw function, taking a draw action
+        let draw = (flip (refDrawCtx ctx)) stateRef
+
+        draw (drawGame tex)
+
+        -- old, ccontains its own loop and is unnecessary
+        --static . scene $ tex
 
         -- Update fps counter if it's been a second, and loop
         if (t - lastFpsUpdate) >= 1000000

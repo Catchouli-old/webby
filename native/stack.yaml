@@ -1,0 +1,9 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- '.'
+- ../game
+extra-deps:
+- ombra-0.2.1.0
+- vect-0.4.7
+resolver: lts-7.11

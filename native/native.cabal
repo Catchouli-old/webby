@@ -1,8 +1,8 @@
-name:                web
+name:                native
 version:             0.1.0.0
 synopsis:            Simple project template from stack
 description:         Please see README.md
-homepage:            https://github.com/githubuser/web#readme
+homepage:            https://github.com/githubuser/native#readme
 license:             BSD3
 license-file:        LICENSE
 author:              Author name here
@@ -11,20 +11,15 @@ copyright:           2016 Author name here
 category:            Web
 build-type:          Simple
 cabal-version:       >=1.10
-data-files: test
+extra-source-files:  README.md
 
-executable web
+executable native
   hs-source-dirs:      src
   main-is:             Main.hs
   default-language:    Haskell2010
-  other-modules:       Render
-                     , Game
   build-depends:       base >= 4.7 && < 5
-                     , ghcjs-base
-                     , ghcjs-dom
-                     , ghcjs-dom-jsffi
-                     , bytestring
-                     , mtl
-                     , transformers
-                     , file-embed
-                     , time
+                     , game
+                     , sdl2
+                     , ombra
+                     , vector
+                     , JuicyPixels

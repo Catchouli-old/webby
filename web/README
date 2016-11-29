@@ -1,0 +1,4 @@
+edit stack.yaml and change the part that says /home/cat to your own path
+sry dont know how else to fix that
+to build do stack setup and stack build
+apply ghcjs-rtk-bug.patch (from https://github.com/ziocroc/Ombra/blob/master/ghcjs-rts-bug.patch) to your mem.js, at a similar path to the above in ghcjs-shims, sorry again, see apply-patch.sh but you'll have to change the username again from cat
