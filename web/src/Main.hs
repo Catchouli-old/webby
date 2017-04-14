@@ -48,10 +48,10 @@ timeMicros = numerator . toRational . (*1000000) <$> getPOSIXTime
 main = do
   canvas <- query "#canvas"
   ctx <- makeContext canvas
-  stateRef <- drawState 512 512 >>= newIORef
+  stateRef <- drawState 800 800 >>= newIORef
 
-  -- Load our texture
-  tex <- loadTexture "data/images/tex.png"
+  -- Initialise game
+  drawFunc <- initGame loadTexture
 
   -- Main loop
   let loop lastT fps frames lastFpsUpdate = do
@@ -64,10 +64,7 @@ main = do
         -- Draw function, taking a draw action
         let draw = (flip (refDrawCtx ctx)) stateRef
 
-        draw (drawGame (fromIntegral t / 2000000.0) tex)
-
-        -- old, ccontains its own loop and is unnecessary
-        --static . scene $ tex
+        draw (drawFunc (fromIntegral t / 2000000.0))
 
         -- Update fps counter if it's been a second, and loop
         if (t - lastFpsUpdate) >= 1000000

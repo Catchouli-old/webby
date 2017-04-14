@@ -4,6 +4,5 @@ packages:
 - '.'
 - ../game
 extra-deps:
-- ombra-0.2.1.0
-- vect-0.4.7
+- ombra-0.3.0.0
 resolver: lts-7.11

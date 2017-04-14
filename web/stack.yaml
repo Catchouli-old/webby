@@ -5,7 +5,6 @@ extra-package-dbs: []
 packages:
 - '.'
 - /home/cat/.stack/programs/x86_64-linux/ghcjs-0.2.1.9007002_ghc-8.0.1/src/.stack-work/install/x86_64-linux/lts-7.2/8.0.1/share/x86_64-linux-ghc-8.0.1/ghcjs-0.2.1.9007002/lib/ghcjs-prim
-- thirdparty/vect-0.4.7
 - ../game
 - location:
     git: https://github.com/ghcjs/ghcjs-base.git
@@ -22,7 +21,7 @@ extra-deps:
 - ghcjs-dom-jsffi-0.7.0.0
 - jsaddle-0.7.0.0
 - jsaddle-dom-0.7.0.0
-- ombra-0.2.1.0
+- ombra-0.3.0.0
 - ref-tf-0.4.0.1
 compiler-check: match-exact
 compiler: ghcjs-0.2.1.9007002_ghc-8.0.1

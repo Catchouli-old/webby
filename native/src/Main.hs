@@ -9,6 +9,7 @@ import Graphics.Rendering.Ombra.Backend.OpenGL
 import Data.IORef
 import Codec.Picture
 import Codec.Picture.Types (promoteImage)
+import Control.Monad (unless)
 import qualified Data.Vector.Storable as V
 import qualified SDL as SDL
 import qualified SDL.Time as SDL
@@ -27,7 +28,7 @@ title = ""
 -- | The fixed width and height of the window
 
 width, height :: Integer
-(width, height) = (800, 600)
+(width, height) = (800, 800)
 
 
 -- | The entry point for the native (windowed) application
@@ -50,18 +51,23 @@ main = do
   context <- SDL.glCreateContext window
 
   -- Create ombra context
-  stateRef <- drawState 512 512 >>= newIORef
+  stateRef <- drawState 800 800 >>= newIORef
   ctx <- makeContext
-  tex <- loadTexture "data/images/tex.png"
+
+  -- Initialise game
+  drawFunc <- initGame loadTexture
 
   let draw = (flip (refDrawCtx ctx)) stateRef
 
   -- Main loop
-  let loop t = do ticks <- SDL.ticks
+  let loop t = do events <- SDL.pollEvents
+                  let eventPayloads = map SDL.eventPayload events
+                  let quitting = elem SDL.QuitEvent eventPayloads
+                  ticks <- SDL.ticks
                   let elapsed = fromIntegral (ticks) / 5000.0
-                  draw (drawGame elapsed tex)
+                  draw (drawFunc elapsed)
                   SDL.glSwapWindow window
-                  loop ticks
+                  unless quitting (loop ticks)
 
   SDL.ticks >>= loop
 
@@ -80,8 +86,8 @@ loadTexture path = do eimg <- readImage path
                            Left err -> error err 
                            Right img ->
                                    case convertRGBA8 img of
-                                        Image w h v -> return . mkTexture w h $ 
-                                                        colList v
+                                        Image w h v -> return . mkTexture w h False $ 
+                                                        [colList v]
         where colList = fst . V.foldr (\x (l, cs) ->
                                         case cs of
                                              [g, b, a] -> ( Color x g b a : l 
