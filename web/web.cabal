@@ -24,3 +24,6 @@ executable web
                      , ghcjs-dom
                      , ghcjs-dom-jsffi
                      , time
+                     , transformers
+                     , mtl
+                     , reactive-banana

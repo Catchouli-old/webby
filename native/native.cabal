@@ -23,3 +23,4 @@ executable native
                      , ombra
                      , vector
                      , JuicyPixels
+                     , reactive-banana
